@@ -1,13 +1,7 @@
 #include "Shootout.h"
 #include <iostream>
 using namespace std;
-void simulateAllGame(Board* game) {
-    while (game->getAgentsleft() > 1)
-    {
-        game->nextRound(); cout << endl;
-    }
-    game->showBoard();
-}
+
 int main()
 {
     Bow* spear = new Bow(50);
@@ -29,7 +23,7 @@ int main()
     game->insertAgent(a3, 25, 25);
     game->insertAgent(a4, 18, 12);
 
-    simulateAllGame(game);
+    game->simulateByRounds();
 
     return 0;
 }
