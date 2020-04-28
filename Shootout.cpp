@@ -31,11 +31,11 @@ void Board::insertAgent(Agent* a, int _x, int _y) {
     this->matrix[_x][_y] = activeAgents;
     cout << "Inserted agent #" <<activeAgents<<"("<<a<<") at position "<<_x << "x"<<_y<< endl;
 }
-int Board::getAgentsleft() {
+int Board::getAgentsLeft() {
     return agentsLeft;
 }
-void Board::nextRound() {
-    int somethingHappend = 0;
+bool Board::nextRound() {                          // returneaza true daca a ramas un singur agent in viata, false daca nu 
+    bool somethingHappend = false;
     for (int k = 1; k <= activeAgents; k++)        // itereaza prin toti agentii declarati la inceput
     if(agenti[k]){                                 // daca agentul respectiv nu a fost ucis
         int x_ag = agenti[k]->getCoordinatesX();
@@ -56,7 +56,7 @@ void Board::nextRound() {
     found:
 
         if(enemy){
-            somethingHappend = 1;
+            somethingHappend = true;
             if (agenti[k]->shootWithWeaponDead(agenti[enemy]))  // se incearca lovirea inmaicului, si daca acesta este eliminat, este sters din lista de agenti si din matrice
             {
                 agenti[enemy] = 0;
@@ -70,49 +70,50 @@ void Board::nextRound() {
             x_ag = agenti[k]->getCoordinatesX();
             y_ag = agenti[k]->getCoordinatesY();
             this->matrix[x_ag][y_ag] = k;
+            cout << "Agent #" << k << " moved to position " << x_ag << "X" << y_ag << endl;
         }
     }
-    if (somethingHappend == 0)cout << "Nothing happend this round.\n";
+    if (!somethingHappend)cout << "Nothing happend this round.\n";
+    if (agentsLeft == 1) return true;
+    else return false;
 
 }
 
 void Board::simulateAllGame() {
     int num = 1;
-    while (this->getAgentsleft() > 1)
+    while (this->getAgentsLeft() > 1)
     {
-        this->nextRound(); cout << "End of Turn " << num << endl << endl;
+        bool x = this->nextRound(); cout << "End of Turn " << num << endl << endl;
+        if (x) break;
         num++;
     }
     for (int i = 1; i <= activeAgents; i++)
-        if (agenti[i]) cout << "Agentul #" << i << "(" << agenti[i] << ") este castigator!";
+        if (agenti[i]) cout << "Agent #" << i << "(" << agenti[i] << ") is the winner!";
 }
 
 void Board::simulateByRounds() {
-    int numAgentsLeft = 0;
     string input;
-    cout << "La fiecare integorare 'urmatoarea runda?' raspundeti cu y/n/s \n y pentru da \n n pentru n \n s pentru da si sa se afiseze si tabla\n";
-    cout << "urmatoarea runda?\n";
+    cout << "La fiecare integorare 'next round?' raspundeti cu y/n/s \n y pentru da \n n pentru n \n s pentru da si sa se afiseze si tabla\n";
+    cout << "next round?\n";
     cin >> input;
     while (input == "y" || input == "s") {
-        numAgentsLeft = 0;
-        for (int i = 1; i <= activeAgents; i++)
-            if (agenti[i]) numAgentsLeft++;
-        if (numAgentsLeft == 1)break;
-        this->nextRound();
+        bool isEnd = this->nextRound();
         if (input == "s") this->showBoard();
-        cout << "urmatoarea runda? \n";
+        if (isEnd) break;
+        cout << "next round? \n";
         cin >> input;
     }
-    if (numAgentsLeft == 1) {
+    if (this->getAgentsLeft() == 1) {
         for (int i = 1; i <= activeAgents; i++)
-            if (agenti[i]) cout << "Agentul #" << i << "(" << agenti[i] << ") este castigator!";
+            if (agenti[i]) cout << "Agent #" << i << "(" << agenti[i] << ") is the winner!";
     }
     else {
         for (int i = 1; i <= activeAgents; i++)
-            if (agenti[i]) cout << "Agentul #" << i << "(" << agenti[i] << ") a ramas in competitie.\n";
+            if (agenti[i]) cout << "Agent #" << i << "(" << agenti[i] << ") survived.\n";
     }
     cout << "\n";
 }
+
 
 // items
 int Item::ID = 0;

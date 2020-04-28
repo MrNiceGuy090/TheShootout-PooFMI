@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SHOOTOUT_H
+#define SHOOTOUT_H
+
 #include <iostream>
 using namespace std;
 
@@ -157,8 +159,10 @@ public:
     ~Board();
     void insertAgent(Agent* a, int _x, int _y ); // inserarea unui agent a in matrice pe pozitia x y
     void showBoard();
-    void nextRound();
-    int getAgentsleft(); 
+    bool nextRound();        // returneaza true daca a ramas un singur agent in viata, false daca nu 
+    int getAgentsLeft(); 
     void simulateAllGame();  // simulare a jocului pana la terminarea acestuia
     void simulateByRounds(); // simulare a jocului pe runde cu decizia de a continua, continua si arata tabla si oprire 
 };
+
+#endif
