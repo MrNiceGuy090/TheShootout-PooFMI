@@ -23,7 +23,7 @@ int main()
     game->insertAgent(a3, 25, 25);
     game->insertAgent(a4, 18, 12);
 
-    game->simulateByRounds();
+    game->simulateAllGame();
 
     return 0;
 }

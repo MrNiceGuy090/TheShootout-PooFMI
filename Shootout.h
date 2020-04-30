@@ -13,7 +13,7 @@ protected:
 public:
     Item();
     virtual ~Item();
-    int getID();
+    int getID() const;
     
 };
 
@@ -27,8 +27,8 @@ public:
     Armor();
     Armor(int weigth, int protection);
     ~Armor();
-    int getWeight();
-    int getProtection();
+    int getWeight() const;
+    int getProtection() const;
     virtual void takeHit(Agent* owner,int hit);  // armura agentului owner este lovita cu hit hitpoints
 };
 
@@ -105,7 +105,7 @@ public:
 //agents
 class Agent {
 protected:
-    int reach, x, y, maxx, maxy, moveOpt, hp;  // reach = aria de vizibilitate, x,y = coordonateele in matrice, unde maxx si maxy capacitatea matricei, moveOpt dicteaza miscarea in matrice
+    int x, y, moveOpt, hp, maxx, maxy, reach;// reach = aria de vizibilitate, x,y = coordonateele in matrice, unde maxx si maxy capacitatea matricei, moveOpt dicteaza miscarea in matrice
     Armor* armura;
     Weapon* arma;
 public:
@@ -116,17 +116,17 @@ public:
     virtual void moveInPattern() = 0;   // deplasarea in matrice
     void setCoordinates(int _x, int _y, int _maxx,int _maxy);
     void setCoordinates(int _x, int _y);
-    int getCoordinatesX();
-    int getCoordinatesY();
+    int getCoordinatesX() const;
+    int getCoordinatesY() const;
     int shootWithWeaponDead(Agent* that);  //  loveste agentul that si intoarce 1 daca reuseste sa-l ucida
     void takeHitInArmor(int hit);          // directionarea loviturii din metoda de mai sus
     void takeHitInHp(int hit);             // -----------------||--------------------------
-    bool haveArmor();                      // verifica daca agentul are armura
+    bool haveArmor()  const;                      // verifica daca agentul are armura
     void getShot(int hit);                 // agentul primeste lovitura de hit hitpoints
-    int getHp();
-    int getWeaponDmg();
-    int getArmorProtection();
-    int getReach();
+    int getHp() const;
+    int getWeaponDmg() const;
+    int getArmorProtection() const;
+    int getReach() const;
 };
 
 class Krul :public Agent {
@@ -147,9 +147,9 @@ public:
 };
 
 class Board {
-    int n, m;  // capacitatea matricei
+    const int n, m;  // capacitatea matricei
     int** matrix;  // matrice alocata dinamic
-    int numOfAgents; // numarul maxim de agenti
+    const int numOfAgents; // numarul maxim de agenti
     int activeAgents; // numarul de agenti inregistrati initial in joc
     int agentsLeft;  // numarul de agenti ramasi la un moment dat (utilizat pentru conditia de finalizare a jocului)
     typedef Agent* AgentPtr; //alias
@@ -158,9 +158,9 @@ public:
     Board(int n, int m, int numA);
     ~Board();
     void insertAgent(Agent* a, int _x, int _y ); // inserarea unui agent a in matrice pe pozitia x y
-    void showBoard();
+    void showBoard() const;
     bool nextRound();        // returneaza true daca a ramas un singur agent in viata, false daca nu 
-    int getAgentsLeft(); 
+    int getAgentsLeft() const; 
     void simulateAllGame();  // simulare a jocului pana la terminarea acestuia
     void simulateByRounds(); // simulare a jocului pe runde cu decizia de a continua, continua si arata tabla si oprire 
 };

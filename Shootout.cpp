@@ -16,7 +16,7 @@ Board::~Board() {
         delete[] matrix[i];            // stergerea matricei
     delete[] matrix;
 }
-void Board::showBoard() {
+void Board::showBoard() const{
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= m; j++)
             cout << matrix[i][j] << " ";        // afisarea matricei
@@ -31,7 +31,7 @@ void Board::insertAgent(Agent* a, int _x, int _y) {
     this->matrix[_x][_y] = activeAgents;
     cout << "Inserted agent #" <<activeAgents<<"("<<a<<") at position "<<_x << "x"<<_y<< endl;
 }
-int Board::getAgentsLeft() {
+int Board::getAgentsLeft() const{
     return agentsLeft;
 }
 bool Board::nextRound() {                          // returneaza true daca a ramas un singur agent in viata, false daca nu 
@@ -119,7 +119,7 @@ void Board::simulateByRounds() {
 int Item::ID = 0;
 Item::Item():id(++ID) {};
 Item::~Item() {};
-int Item::getID() {
+int Item::getID() const {
     return Item::id;
 }
 
@@ -130,10 +130,10 @@ Armor::Armor(){
     protection = 10;
 }
 Armor::~Armor() {};
-int Armor::getWeight(){
+int Armor::getWeight() const {
     return weigth;
 }
-int Armor::getProtection() {
+int Armor::getProtection() const {
     return protection;
 }
 void Armor::takeHit(Agent* owner, int hit) {  
@@ -327,10 +327,10 @@ void Agent::setCoordinates(int _x, int _y, int _maxx, int _maxy) {
 void Agent::setCoordinates(int _x, int _y)  {
     x = _x; y = _y;
 };
-int Agent::getCoordinatesX() {
+int Agent::getCoordinatesX() const {
     return x;
 }
-int Agent::getCoordinatesY() {
+int Agent::getCoordinatesY() const {
     return y;
 }
 int Agent::shootWithWeaponDead(Agent* that) {
@@ -350,7 +350,7 @@ void Agent::takeHitInHp(int hit) {
         cout << this << " got shot, " << hp << " hp left" << endl;
     }
 }
-bool Agent::haveArmor() {
+bool Agent::haveArmor() const {
     if (armura) return true;
     else return false;
 }
@@ -359,16 +359,16 @@ void Agent::getShot(int hit) {
     if (this->haveArmor())this->takeHitInArmor(hit);
     else this->takeHitInHp(hit);
 }
-int Agent::getHp() {
+int Agent::getHp() const {
     return hp;
 }
-int Agent::getWeaponDmg() {
+int Agent::getWeaponDmg() const {
     return arma->getDmg();
 }
-int Agent::getArmorProtection() {
+int Agent::getArmorProtection() const {
     return armura->getProtection();
 }
-int Agent::getReach() {
+int Agent::getReach() const {
     return reach;
 }
 
